@@ -404,5 +404,22 @@
 		});
 	};
 
+	// Method responsible to check user authentication and deliver Maxon binaries based on actual location
+	// Method responsible to re-route non authenticated user to landing
+	OAuth.routesOnLoad = function (data, callback) {
+		const app = data.app;
+
+		// re-route non authenticated users to landing
+		app.get('/', function (req, res) {
+			// check the user to be logged in
+			console.log('app.get ', req.loggedIn);
+			if (req.loggedIn) {
+				res.redirect('/categories');
+			} else res.redirect('/landing');
+		});
+
+		callback(null);
+	};
+
 	module.exports = OAuth;
 }(module));
