@@ -412,7 +412,6 @@
 		// re-route non authenticated users to landing
 		app.get('/', function (req, res) {
 			// check the user to be logged in
-			console.log('app.get ', req.loggedIn);
 			if (req.loggedIn) {
 				res.redirect('/categories');
 			} else res.redirect('/landing');
