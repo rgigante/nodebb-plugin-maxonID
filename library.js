@@ -429,12 +429,12 @@
 				res.redirect('/categories');
 			} else res.redirect('/landing');
 		});
-		app.get('/categories', function (req, res) {
-			// check the user to be logged in
-			if (req.loggedIn) {
-				res.redirect('/categories');
-			} else res.redirect('/landing');
-		});
+		// app.get('/categories', function (req, res) {
+		// 	// check the user to be logged in
+		// 	if (req.loggedIn) {
+		// 		res.redirect('/categories');
+		// 	} else res.redirect('/landing');
+		// });
 		app.get('/unread', function (req, res) {
 			// check the user to be logged in
 			if (req.loggedIn) {
