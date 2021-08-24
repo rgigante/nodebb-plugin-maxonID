@@ -429,6 +429,54 @@
 				res.redirect('/categories');
 			} else res.redirect('/landing');
 		});
+		app.get('/categories', function (req, res) {
+			// check the user to be logged in
+			if (req.loggedIn) {
+				res.redirect('/categories');
+			} else res.redirect('/landing');
+		});
+		app.get('/unread', function (req, res) {
+			// check the user to be logged in
+			if (req.loggedIn) {
+				res.redirect('/unread');
+			} else res.redirect('/landing');
+		});
+		app.get('/recent', function (req, res) {
+			// check the user to be logged in
+			if (req.loggedIn) {
+				res.redirect('/recent');
+			} else res.redirect('/landing');
+		});
+		app.get('/tags', function (req, res) {
+			// check the user to be logged in
+			if (req.loggedIn) {
+				res.redirect('/tags');
+			} else res.redirect('/landing');
+		});
+		app.get('/popular', function (req, res) {
+			// check the user to be logged in
+			if (req.loggedIn) {
+				res.redirect('/popular');
+			} else res.redirect('/landing');
+		});
+		app.get('/users', function (req, res) {
+			// check the user to be logged in
+			if (req.loggedIn) {
+				res.redirect('/users');
+			} else res.redirect('/landing');
+		});
+		app.get('/groups', function (req, res) {
+			// check the user to be logged in
+			if (req.loggedIn) {
+				res.redirect('/groups');
+			} else res.redirect('/landing');
+		});
+		app.get('/admin', function (req, res) {
+			// check the user to be logged in
+			if (req.loggedIn) {
+				res.redirect('/admin');
+			} else res.redirect('/landing');
+		});
 
 		callback(null);
 	};
