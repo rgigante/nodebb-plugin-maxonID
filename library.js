@@ -471,12 +471,12 @@
 				res.redirect('/groups');
 			} else res.redirect('/landing');
 		});
-		app.get('/admin', function (req, res) {
-			// check the user to be logged in
-			if (req.loggedIn) {
-				res.redirect('/admin');
-			} else res.redirect('/landing');
-		});
+		// app.get('/admin', function (req, res) {
+		// 	// check the user to be logged in
+		// 	if (req.loggedIn) {
+		// 		res.redirect('/admin');
+		// 	} else res.redirect('/landing');
+		// });
 
 		callback(null);
 	};
