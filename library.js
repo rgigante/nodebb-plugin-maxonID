@@ -190,6 +190,7 @@
 	OAuth.checkEntitlement = function (inputData, callback) {
 		const checkURL = nconf.get('oauth_plugin:idserver') + '/authz/.json?' + inputData[1] + '&doConsume=false';
 		if (constants.debugOutput !== undefined && constants.debugOutput) winston.verbose('[maxonID] OAuth.checkEntitlement');
+		if (constants.debugOutput !== undefined && constants.debugOutput) console.log('Bearer: ', inputData[0]);
 		if (useUnirestAPI) {
 			const unirest = require('unirest');
 			unirest('GET', checkURL)
@@ -204,7 +205,17 @@
 					if (typeof parsedBody[inputData[1]] !== 'undefined') {
 						if (constants.debugOutput !== undefined && constants.debugOutput) console.log(inputData[1], parsedBody[inputData[1]]);
 						return (callback(parsedBody[inputData[1]]));
+					} else if (
+						// assume that if a licenses is found and the 'licenseAnchorMissing' is returned as error code the license is VALID
+						(typeof parsedBody.lic !== 'undefined') &&
+						(typeof parsedBody.ibb !== 'undefined') &&
+						(typeof parsedBody.ibe !== 'undefined') &&
+						(typeof parsedBody[inputData[1] + '_errorCode'] !== 'undefined') &&
+						(parsedBody[inputData[1] + '_errorCode'] === 'licenseAnchorMissing')) {
+						if (constants.debugOutput !== undefined && constants.debugOutput) console.log(inputData[1], parsedBody.lic, parsedBody[inputData[1] + '_errorCode'] === 'licenseAnchorMissing');
+						return (callback(true));
 					}
+
 					if (constants.debugOutput !== undefined && constants.debugOutput) console.log(inputData[1], false);
 					return (callback(false));
 				});
@@ -225,7 +236,17 @@
 				if (typeof parsedBody[inputData[1]] !== 'undefined') {
 					if (constants.debugOutput !== undefined && constants.debugOutput) console.log(inputData[1], parsedBody[inputData[1]]);
 					return (callback(parsedBody[inputData[1]]));
+				} else if (
+					// assume that if a licenses is found and the 'licenseAnchorMissing' is returned as error code the license is VALID
+					(typeof parsedBody.lic !== 'undefined') &&
+					(typeof parsedBody.ibb !== 'undefined') &&
+					(typeof parsedBody.ibe !== 'undefined') &&
+					(typeof parsedBody[inputData[1] + '_errorCode'] !== 'undefined') &&
+					(parsedBody[inputData[1] + '_errorCode'] === 'licenseAnchorMissing')) {
+					if (constants.debugOutput !== undefined && constants.debugOutput) console.log(inputData[1], parsedBody.lic, (parsedBody[inputData[1] + '_errorCode'] === 'licenseAnchorMissing'));
+					return (callback(true));
 				}
+
 				if (constants.debugOutput !== undefined && constants.debugOutput) console.log(inputData[1], false);
 				return (callback(false));
 			});
@@ -279,12 +300,12 @@
 
 				// add user to premium group
 				if (payload.isPremium) {
-					if (constants.debugOutput !== undefined && constants.debugOutput) { winston.verbose('[maxonID] Existing user is Premium, join the group'); }
+					if (constants.debugOutput !== undefined && constants.debugOutput) { winston.verbose('[maxonID] User is Premium, join the group'); }
 					groups.join(constants.premiumGroupId, uid, function (err) {
 						callback(err, { uid: uid });
 					});
 				} else {
-					if (constants.debugOutput !== undefined && constants.debugOutput) { winston.verbose('[maxonID] Existing user is Premium, leave the group'); }
+					if (constants.debugOutput !== undefined && constants.debugOutput) { winston.verbose('[maxonID] User is not Premium, leave the group'); }
 					groups.leave(constants.premiumGroupId, uid, function (err) {
 						callback(err, { uid: uid });
 					});
